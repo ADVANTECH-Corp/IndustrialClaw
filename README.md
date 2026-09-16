@@ -1,4 +1,4 @@
-# IC Agents
+# IndustrailClaw Agents
 
 Agent packages ready to import into an Industrial Claw device. Each Agent ships with a runnable Task, so it works the moment it is imported.
 
