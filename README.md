@@ -1,87 +1,50 @@
-# IndustrailClaw Agents
+# IndustrialClaw Agents
 
-Agent packages ready to import into an Industrial Claw device. Each Agent ships with a runnable Task, so it works the moment it is imported.
+Ready-to-use Agents for IndustrialClaw. Each one comes with a Task, so you can import it and run it right away.
 
-## What is here
+Browse the Agents in the [`agents/`](agents/) folder.
 
-Every folder holds the same three things:
+## Download
 
-| File | Purpose |
-|---|---|
-| `<agent-name>.zip` | The Agent package. **The filename is the Agent's name** |
-| `*.md` | The Task definition. Created after the Agent is imported |
-| `README.md` | Notes for that Agent |
+Each Agent needs two files: the `.zip` (Agent) and the `.md` (Task).
 
-## How to use it
+**Option A: from the GitHub page**
 
-Three steps, all in the Dashboard, all requiring **Administrator**.
+1. Open the Agent's folder, e.g. [`agents/hello-world-agent`](agents/hello-world-agent/)
+2. Click the file (`hello-world-agent.zip`)
+3. Click the **Download raw file** button (⬇) at the top right of the file view
+4. Do the same for the `.md` Task file
 
-### 1. Import the Agent
+Want everything at once? On the repo's main page, click **Code → Download ZIP**.
 
-Agents → Agent Management → **Import Package**, and pick `<agent-name>.zip`.
+**Option B: with curl**
 
-The Security Scanner then decides whether the package gets in:
-
-- All **weak** → passes straight through
-- Any **medium** → you must confirm that scan result before it is allowed
-- Any **high** → blocked
-
-Confirm, then press **Create Agent**. The system builds the workspace and registers the Agent:
-
-```text
-workspace-<agent-name>/
-├── skills/        what was just imported
-├── tasks/         empty, waiting for the next step
-├── materials/     empty, input files for a Task go here
-└── outputs/       empty, where a Task writes unless it says otherwise
+```bash
+BASE=https://raw.githubusercontent.com/ADVANTECH-Corp/IndustrialClaw/master/agents
+curl -LO $BASE/hello-world-agent/hello-world-agent.zip
+curl -LO $BASE/hello-world-agent/hello-world-task.md
 ```
 
-**A freshly created Agent has no Tasks and an empty Work Queue. That is normal.**
+For another Agent, swap in its folder and file names.
 
-### 2. Create the Task
+## Quick start
 
-Task Management → **Create Task**:
+You'll need an **Administrator** account on the Dashboard.
 
-1. Pick the **Agent**
-2. Pick the **Task Markdown** — the `.md` sitting in that folder
-3. Press **Create**
+1. **Import the Agent**: go to Agents → Agent Management → **Import Package**, pick the `.zip`, then press **Create Agent**
+2. **Create the Task**: go to Task Management → **Create Task**, pick the Agent and its `.md` file, then press **Create**
+3. **Run it**: find the Task in **Available Tasks** and press **START**
 
-The format and the Expected Output paths are validated on creation; anything wrong is refused there and then. Afterwards you can click the row in **Available Tasks** to see exactly what is stored on the device.
+Results show up in the Agent's `outputs/` folder.
 
-### 3. Run it
+> New device? Try [`hello-world-agent`](agents/hello-world-agent/) first. It takes under a minute and confirms everything works.
 
-Find the Task in **Available Tasks** and press **START**. A new row appears under **Task Runs** with Status, Tokens, and Duration. A running Task has a **STOP**.
+## Troubleshooting
 
-## Where the output files land
+- **Import asks for confirmation**: the Security Scanner rated the package *medium*. Review it and confirm.
+- **Import is blocked**: the package was rated *high* risk, or the ZIP layout is wrong (see below).
+- **No Tasks after import**: that's normal. Create one in step 2.
 
-An Expected Output with **no directory of its own** (say `cpu-usage-monitor-report.md`) resolves to `outputs/cpu-usage-monitor-report.md`. The declaration, every Step's `execute` and `check`, and the Final Verification are all rewritten together, so the check always looks where the command writes.
+## Build your own Agent
 
-A name that already carries a directory (say `reports/cpu.md`) is taken exactly as written, and the Task owns creating that directory.
-
-## Limits
-
-| Item | Maximum |
-|---|---|
-| Agent ZIP | 20 MB |
-| Task Markdown | 64 KB |
-| Material ZIP (optional) | 1 GB |
-
-An Agent name may use lowercase letters, digits, and hyphens only, and cannot be `main`.
-
-## Building your own Agent
-
-One folder holding exactly two things, zipped:
-
-```text
-my-agent/
-├── TOOLS.md       Skill catalog: which Skills this Agent has
-└── skills/        The Skills themselves, one folder each
-    └── my-skill/
-        └── SKILL.md
-```
-
-Both are required, and both must sit at the top level — **do not wrap them in another folder**.
-
-The Skills listed in `TOOLS.md` must match the folders under `skills/` **exactly**. This is the most common reason an import fails.
-
-**The ZIP must not contain `tasks/`** — one that does is refused. Tasks are always created afterwards, one at a time, in the Dashboard.
+Start from `hello-world-agent`. See the step-by-step guide in [agents/README.md](agents/README.md#build-your-own-agent).

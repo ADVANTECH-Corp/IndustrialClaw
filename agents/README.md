@@ -1,31 +1,85 @@
 # Agents
 
-The Agent packages that can be imported as they are. Import and run steps are in the [top-level README](../README.md).
+Each folder here is one Agent:
 
-| Agent | What it does | Task it ships with | Runtime |
-|---|---|---|---|
-| [`device-monitor-agent`](device-monitor-agent/) | Monitors local CPU usage, CPU temperature, and root disk | `monitor-local-cpu.md` | A few minutes (2 rounds x 3 Steps x 5 samples) |
-| [`hello-world-agent`](hello-world-agent/) | Runs one script and prints a success message | `hello-world-task.md` | Under a minute |
+| File | Description |
+|---|---|
+| `<agent-name>.zip` | Agent |
+| `*-task.md` | Task |
+| `README.md` | What the Agent does, and what goes in and comes out |
 
-## Which one to run first
+## Use an Agent
 
-**On a freshly installed device, run `hello-world-agent` first.** Three files, one Step: enough to prove the whole path works — import, create the Task, run it, produce the file, pass Final Verification. Once that works, move on to the real one.
+You'll need an **Administrator** account on the Dashboard. To download the files, see [Download](../README.md#download).
 
-## How the two differ
+1. **Import the Agent**: go to Agents → Agent Management → **Import Package**, pick the `.zip`, then press **Create Agent**
+2. **Create the Task**: go to Task Management → **Create Task**, pick the Agent and its `.md` file, then press **Create**
+3. **Run it**: find the Task in **Available Tasks** and press **START**
 
-| | `hello-world-agent` | `device-monitor-agent` |
-|---|---|---|
-| Files | 3 | 16 |
-| Skill | `hello-world` | `device-monitor` |
-| Permissions | none | `env`, `file_read`, `file_write`, `shell` |
-| Steps | 1 | 3 |
-| `cycle` / `retry` | 1 / 0 | 2 / 1 |
-| Expected Outputs | 1 | 3 |
+Results show up in the Agent's `outputs/` folder.
 
-`device-monitor-agent` reads `/proc` and `/sys` and calls `nvidia-smi` / `rocm-smi`, so the Security Scanner rates it higher than `hello-world-agent`. A device with a stricter `SECURITY_SCAN_LEVEL` may refuse it — that is the gate working, not a fault.
+## Build your own Agent
 
-## Naming
+The easiest way to start is to copy [`hello-world-agent`](hello-world-agent/) and change it. In this example, the new Agent is called `my-agent` and its Skill is called `my-skill`.
 
-Folder name, ZIP filename, and Agent name are the same string. **The Agent's name is the ZIP's filename** — importing `device-monitor-agent.zip` gives you an Agent called `device-monitor-agent` whose workspace is `workspace-device-monitor-agent/`.
+### 1. Unzip hello-world
 
-To rename an Agent, rename the ZIP. Nothing inside the package changes.
+```bash
+mkdir my-agent && cd my-agent
+unzip ../hello-world-agent/hello-world-agent.zip
+```
+
+You get three files:
+
+```text
+TOOLS.md                              lists the Agent's Skills
+skills/hello-world/SKILL.md           tells the Agent what the Skill does and how to run it
+skills/hello-world/scripts/hello.sh   the script that does the work
+```
+
+### 2. Make it your Skill
+
+```bash
+mv skills/hello-world skills/my-skill
+mv skills/my-skill/scripts/hello.sh skills/my-skill/scripts/my-script.sh
+```
+
+- **`my-script.sh`**: write what your Skill should do
+- **`SKILL.md`**: describe the Skill, the command that runs it, and what a successful result looks like
+- **`TOOLS.md`**: change the Skill link to `[my-skill](skills/my-skill/SKILL.md)`
+
+The Skill names in `TOOLS.md` must match the folders in `skills/` **exactly**. This is the most common reason an import fails.
+
+### 3. Zip it
+
+Run this from inside `my-agent/`, so `TOOLS.md` and `skills/` sit at the top of the ZIP:
+
+```bash
+zip -r ../my-agent.zip TOOLS.md skills
+```
+
+- The ZIP filename becomes the Agent name: lowercase letters, digits, and hyphens only
+- Don't include a `tasks/` folder
+- Size limit: 20 MB
+
+### 4. Write the Task
+
+Copy `hello-world-agent/hello-world-task.md` to `my-task.md`, then change:
+
+| Section | What to write |
+|---|---|
+| `# Title` / `## Goal` | What this Task is for |
+| `## General Setting` | `cycle`: how many rounds to run. `retry`: how many times to retry a failed Step |
+| `## Expected Outputs` | The files the Task produces. A bare filename lands in `outputs/` |
+| `## Step N` | `execute`: the command. `check`: a command that must return `0`. `on failure`: `stop` or `continue` |
+| `## Final Verification` | A command that decides whether the whole Task succeeded |
+
+Keep the `schema_version: "1.0"` header at the top. Size limit: 64 KB.
+
+### 5. Try it
+
+Import `my-agent.zip` and run `my-task.md` using the steps in [Use an Agent](#use-an-agent).
+
+### 6. Add it here
+
+Create a folder named after the Agent, and put the ZIP, the Task, and a `README.md` in it. Use the [hello-world README](hello-world-agent/README.md) as the template.
