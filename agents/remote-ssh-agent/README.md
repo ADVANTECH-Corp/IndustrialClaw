@@ -42,3 +42,13 @@ outputs/ssh/.current-run-id
 ```
 
 The setup report records the SSH key fingerprint and connection verification result without exposing the password or private key.
+
+### Note
+
+> [!WARNING]
+> This agent only works when one of the following is true:
+>
+> - IndustrialClaw runs in **develop-mode**, or
+> - `docker-compose-skill.yml` puts the Skill runtime on the same network as the host (`network_mode: host`), so it can reach external computers and external computers can connect back to it.
+>
+> **Security risk:** Both options remove the Skill runtime's network isolation. Other computers on the network can reach it, and it holds SSH credentials that can run commands on the remote host. Only use this on a trusted network, use a low-privilege SSH account, and switch back to runtime mode / remove `network_mode: host` when you are done.
