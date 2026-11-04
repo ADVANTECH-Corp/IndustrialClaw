@@ -2,15 +2,15 @@
 
 ## Description
 
-Selects up to 15 public Hugging Face model families from the past seven days and produces a responsive HTML report with Traditional Chinese descriptions, intended audiences, selection reasons, source evidence, and limitations.
+Selects up to 15 public Hugging Face model families from the past seven days and produces a responsive HTML report with English descriptions, intended audiences, selection reasons, source evidence, and limitations.
 
 ## Agent Resume
 
 | Item | Content |
 |---|---|
 | Object | Select up to 15 model families, with at most three per category, within the seven days preceding the collection command's start time; generate and verify an HTML report and JSON data for the current run. |
-| Skills | `hf-weekly-review`: collects public model metadata and model cards, selects model families, and generates evidence-based Traditional Chinese summaries with run-bound verification.<br>`frontend-design`: applies the reviewed HF report design before outputs are published and hashed. |
-| Task | Hugging Face 七日精選模型週報 (`latest-hf-models.md`) |
+| Skills | `hf-weekly-review`: collects public model metadata and model cards, selects model families, and generates evidence-based English summaries with run-bound verification.<br>`frontend-design`: applies the reviewed HF report design before outputs are published and hashed. |
+| Task | Hugging Face Seven-Day Model Selection Report (`latest-hf-models.md`) |
 | Prerequisite | Python 3 on a platform supporting `fcntl`, network access to Hugging Face, and the configured local Ollama model `gemma4:26b-a4b-it-Q8_0` at `http://host.docker.internal:23951/api/chat`. The platform must provide `TASK_ID` or `TASK_ARTIFACT_DIR`. |
 | Input | None; uses public Hugging Face API data and model cards without a token. |
 | Output | `outputs/hf-weekly/report.html`<br>`outputs/hf-weekly/models.json` |
@@ -35,6 +35,8 @@ The report is a curated selection, not a performance ranking. Summaries use the 
 
 The build has a 720-second hard limit, with budgets of 240 seconds for collection, 90 seconds for reading model cards, and 300 seconds for summaries. It uses the Python standard library without installing packages or loading external fonts or CDNs.
 
-Run the commands in `latest-hf-models.md` exactly from the Agent workspace. Its `python3 -m skills.frontend-design.scripts.report` commands take precedence over older path-based examples in the packaged Skill documents. The package's `TOOLS.md` describes it as an update delta for an installed agent using `update-flat`; preserve the existing `hf-weekly-review` scripts when updating.
+Run the commands in `latest-hf-models.md` exactly from the Agent workspace. Its `python3 -m skills.frontend-design.scripts.report` commands take precedence over older path-based examples in the packaged Skill documents. Install all packaged scripts together when updating so the English renderer, summary prompt, validator, and regression fixtures remain consistent.
 
 Offline design checks do not establish desktop or mobile browser acceptance. Actual rendering, keyboard interaction, and visual accessibility require separate browser checks. The termination regression tests only their own subprocesses and do not establish platform `stop-task` integration.
+
+Report labels and generated descriptions are English. Original-source titles and evidence quotes are preserved verbatim.
