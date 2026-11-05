@@ -11,8 +11,7 @@ Selects up to 15 public Hugging Face model families from the past seven days and
 | Object | Select up to 15 model families, with at most three per category, within the seven days preceding the collection command's start time; generate and verify an HTML report and JSON data for the current run. |
 | Skills | `hf-weekly-review`: collects public model metadata and model cards, selects model families, and generates evidence-based English summaries with run-bound verification.<br>`frontend-design`: applies the reviewed HF report design before outputs are published and hashed. |
 | Task | Hugging Face Seven-Day Model Selection Report (`latest-hf-models.md`) |
-| Prerequisite | Python 3 on a platform supporting `fcntl`, network access to Hugging Face, and the configured local Ollama model `gemma4:26b-a4b-it-Q8_0` at `http://host.docker.internal:23951/api/chat`. The platform must provide `TASK_ID` or `TASK_ARTIFACT_DIR`. |
-| Input | None; uses public Hugging Face API data and model cards without a token. |
+| Prerequisite | Prerequisite: Python 3, Hugging Face API access, an available LLM service, and platform-provided task execution identifiers. |
 | Output | `outputs/hf-weekly/report.html`<br>`outputs/hf-weekly/models.json` |
 | Step | 3 Steps, 1 cycle: offline output-consistency and termination regression → frontend design and compatibility regression → collect models, summarize, and generate the report. |
 | Error Handling | 0 Task retries configured; stops if any Step fails. Temporary source errors allow up to three retries, respecting `Retry-After`. Interrupted or timed-out builds do not publish outputs; old outputs are retained but cannot count as the current run's success. |
