@@ -21,8 +21,8 @@ Selects up to 15 public Hugging Face model families from the past seven days and
 
 | File | Description |
 |---|---|
-| `hugging-face-agent.zip` | Agent |
-| `latest-hf-models.md` | Task |
+| [`hugging-face-agent.zip`](hugging-face-agent.zip?raw=true) | Agent |
+| [`latest-hf-models.md`](latest-hf-models.md?raw=true) | Task |
 
 ## Verified Models
 

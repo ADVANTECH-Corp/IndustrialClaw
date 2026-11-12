@@ -22,8 +22,8 @@ Collects up to 30 of the latest arXiv papers across ten AI-related categories, s
 
 | File | Description |
 |---|---|
-| `arxiv-ai-agent.zip` | Agent |
-| `latest-arxiv-ai.md` | Task |
+| [`arxiv-ai-agent.zip`](arxiv-ai-agent.zip?raw=true) | Agent |
+| [`latest-arxiv-ai.md`](latest-arxiv-ai.md?raw=true) | Task |
 
 ## Verified Models
 

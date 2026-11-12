@@ -22,8 +22,8 @@ Monitors the local machine's CPU usage, CPU temperature, and root disk, writing 
 
 | File | Description |
 |---|---|
-| `device-monitor-agent.zip` | Agent |
-| `monitor-local-cpu-task.md` | Task |
+| [`device-monitor-agent.zip`](device-monitor-agent.zip?raw=true) | Agent |
+| [`monitor-local-cpu-task.md`](monitor-local-cpu-task.md?raw=true) | Task |
 
 ## Verified Models
 

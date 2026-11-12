@@ -22,8 +22,8 @@ Minimal example agent. Confirms Industrial Claw can invoke an installed Skill an
 
 | File | Description |
 |---|---|
-| `hello-world-agent.zip` | Agent |
-| `hello-world-task.md` | Task |
+| [`hello-world-agent.zip`](hello-world-agent.zip?raw=true) | Agent |
+| [`hello-world-task.md`](hello-world-task.md?raw=true) | Task |
 
 ## Verified Models
 

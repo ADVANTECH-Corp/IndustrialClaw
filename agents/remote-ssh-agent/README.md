@@ -25,9 +25,9 @@ Connects to a remote computer over SSH using the credentials provided in the mat
 
 | File | Description |
 |---|---|
-| `remote-ssh-agent.zip` | Agent |
-| `remote-print-hello-world-task.md` | Task |
-| `materials.zip` | Materials |
+| [`remote-ssh-agent.zip`](remote-ssh-agent.zip?raw=true) | Agent |
+| [`remote-print-hello-world-task.md`](remote-print-hello-world-task.md?raw=true) | Task |
+| [`materials.zip`](materials.zip?raw=true) | Materials |
 
 ## Verified Models
 
